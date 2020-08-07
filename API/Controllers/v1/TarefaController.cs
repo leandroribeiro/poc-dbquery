@@ -2,7 +2,7 @@
 using Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 
-namespace API.Controllers
+namespace API.Controllers.v1
 {
 
     [ApiController]
@@ -29,7 +29,7 @@ namespace API.Controllers
         [HttpGet]
         public PagedResult<TarefaConcluidaQuery> Paged(int page, int pageSize)
         {
-            return _repository.ObterTarefasConcluidas().GetPaged(page, pageSize);
+            return _repository.ObterTarefasConcluidasFromSql().GetPaged(page, pageSize);
         }
         
     }

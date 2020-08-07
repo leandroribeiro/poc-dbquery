@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Domain;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
@@ -75,7 +73,48 @@ namespace Infrastructure.IntegrationTests
             var tarefas = _repository.ObterComPaginacao(1, 3).ToList();
 
             tarefas.Should().NotBeNullOrEmpty()
-                .And.HaveCountGreaterOrEqualTo(3);
+                .And.HaveCount(3);
+        }
+
+        [Fact]
+        public void ObterTarefasConcluidasTest()
+        {
+            var tarefas = _repository.ObterTarefasConcluidas().ToList();
+
+            tarefas.Should().NotBeNullOrEmpty()
+                .And.HaveCount(5)
+                .And.OnlyContain(x=>x.Concluida);
+        }
+        
+        [Fact]
+        public void ObterTarefasConcluidasFromSqlTest()
+        {
+            var tarefas = _repository.ObterTarefasConcluidasFromSql().ToList();
+
+            tarefas.Should().NotBeNullOrEmpty()
+                .And.HaveCount(5)
+                .And.OnlyContain(x=>x.Concluida);
+        }
+        
+        [Fact]
+        public void ObterTarefasConcluidasFromSqlAsyncTest()
+        {
+            var task = _repository.ObterTarefasConcluidasFromSqlAsync();
+            
+            var tarefas = task.Result.Should().BeOfType<List<TarefaConcluidaQuery>>().Subject;
+
+            tarefas.Should().NotBeNullOrEmpty()
+                .And.HaveCount(5)
+                .And.OnlyContain(x=>x.Concluida);
+        }
+        
+        [Fact]
+        public void ObterTarefasConcluidasFromSqlComPaginacaoTest()
+        {
+            var tarefas = _repository.ObterTarefasConcluidasFromSqlComPaginacao(1, 3).ToList();
+
+            tarefas.Should().NotBeNullOrEmpty()
+                .And.HaveCount(3);
         }
         
     }

@@ -19,6 +19,8 @@ namespace Infrastructure
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new TarefaConfiguration());
+            modelBuilder.Query<TarefaConcluidaQuery>().ToView("TarefasConcluidas");
+
         }
     }
 

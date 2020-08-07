@@ -46,24 +46,29 @@ namespace Infrastructure
             return Obter().Skip(skip).Take(pageSize);
         }
 
-        public IQueryable<TarefaConcluidaQuery> ObterTarefasConcluidas()
+        public IEnumerable<TarefaConcluidaQuery> ObterTarefasConcluidas()
         {
-            var query = "SELECT *, 'Concluida' as 'Situacao' FROM Tarefa";
+            return Context.TarefasConcluidas.AsQueryable();
+        }
+        
+        public IQueryable<TarefaConcluidaQuery> ObterTarefasConcluidasFromSql()
+        {
+            var query = "SELECT Nome, Concluida FROM Tarefa WHERE Concluida=1";
             
             return Context.Query<TarefaConcluidaQuery>()
                 .FromSql(query);
         }
 
-        public Task<List<TarefaConcluidaQuery>> ObterTarefasConcluidasAsync()
+        public Task<List<TarefaConcluidaQuery>> ObterTarefasConcluidasFromSqlAsync()
         {
-            return ObterTarefasConcluidas().ToListAsync();
+            return ObterTarefasConcluidasFromSql().ToListAsync();
         }
         
-        public IQueryable<TarefaConcluidaQuery> ObterTarefasConcluidasComPaginacao(int pageIndex, int pageSize)
+        public IQueryable<TarefaConcluidaQuery> ObterTarefasConcluidasFromSqlComPaginacao(int pageIndex, int pageSize)
         {
             var skip = (pageIndex - 1) * pageSize;
             
-            return ObterTarefasConcluidas().Skip(skip).Take(pageSize);
+            return ObterTarefasConcluidasFromSql().Skip(skip).Take(pageSize);
         }
         
     }

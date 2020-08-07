@@ -2,8 +2,12 @@
 {
     public class TarefaConcluidaQuery
     {
-        public decimal Codigo { get; set; }
-        public string Nome { get; set; }
-        public string Situacao { get; set; }
+        public TarefaConcluidaQuery()
+        {
+            
+        }
+
+        public string Nome { get; private set; }
+        public bool Concluida { get; private set; }
     }
 }

@@ -7,7 +7,7 @@ namespace Domain
     public interface ITarefaRepository
     {
         IQueryable<Tarefa> Obter();
-        IQueryable<TarefaConcluidaQuery> ObterTarefasConcluidas();
-        IQueryable<TarefaConcluidaQuery> ObterTarefasConcluidasComPaginacao(int pageIndex, int pageSize);
+        IQueryable<TarefaConcluidaQuery> ObterTarefasConcluidasFromSql();
+        IQueryable<TarefaConcluidaQuery> ObterTarefasConcluidasFromSqlComPaginacao(int pageIndex, int pageSize);
     }
 }

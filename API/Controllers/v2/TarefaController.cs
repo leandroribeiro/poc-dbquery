@@ -22,7 +22,7 @@ namespace API.Controllers.v2
         [HttpGet]
         public IList<TarefaConcluidaQuery> Get(int page, int pageSize)
         {
-            return Repository.GetTarefasConcluidas(page, pageSize).ToList();
+            return Repository.ObterTarefasConcluidasComPaginacao(page, pageSize).ToList();
         }
         
     }

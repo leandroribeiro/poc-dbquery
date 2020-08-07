@@ -21,7 +21,7 @@ namespace API.Controllers
         [HttpGet]
         public PagedResult<Tarefa> Get(int page = 0, int pageSize = 5)
         {
-            return _repository.Get().GetPaged(page, pageSize);
+            return _repository.Obter().GetPaged(page, pageSize);
         }
         
         // GET api/v1/[controller]/concluidas[?page=1&pageSize=5]
@@ -29,7 +29,7 @@ namespace API.Controllers
         [HttpGet]
         public PagedResult<TarefaConcluidaQuery> Paged(int page, int pageSize)
         {
-            return _repository.GetTarefasConcluidas().GetPaged(page, pageSize);
+            return _repository.ObterTarefasConcluidas().GetPaged(page, pageSize);
         }
         
     }

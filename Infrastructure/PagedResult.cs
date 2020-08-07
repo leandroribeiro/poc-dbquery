@@ -40,10 +40,12 @@ namespace Infrastructure
         public static PagedResult<T> GetPaged<T>(this IQueryable<T> query, 
             int page, int pageSize) where T : class
         {
-            var result = new PagedResult<T>();
-            result.CurrentPage = page;
-            result.PageSize = pageSize;
-            result.RowCount = query.Count();
+            var result = new PagedResult<T>
+            {
+                CurrentPage = page, 
+                PageSize = pageSize, 
+                RowCount = query.Count()
+            };
 
 
             var pageCount = (double)result.RowCount / pageSize;
@@ -55,6 +57,7 @@ namespace Infrastructure
             return result;
         }
         
+        // Versão utilizando AutoMapper
         // public static PagedResult<U> GetPaged<T, U>(this IQueryable<T> query,
         //     int page, int pageSize) where U: class
         // {

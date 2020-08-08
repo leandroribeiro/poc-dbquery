@@ -10,14 +10,14 @@ GO
 
 CREATE TABLE Tarefa
 (
-Codigo NUMERIC(4) PRIMARY KEY,
+Id NUMERIC(4) PRIMARY KEY UNIQUE ,
 Nome VARCHAR(10) NOT NULL,
 Concluida BIT NOT NULL DEFAULT 0,
 ) 
 
 CREATE VIEW TarefasConcluidas
 AS
-SELECT Nome, Concluida FROM Tarefa WHERE Concluida=1;
+SELECT t.Nome AS 'Tarefa', U.Nome AS 'Usuario', Concluida FROM Tarefa AS T LEFT JOIN Usuario AS U ON U.Id = Tarefa.UsuarioId WHERE Concluida=1;
 
 
 INSERT INTO Tarefa (Codigo, Nome, Concluida) VALUES (001, 'E001', 1);

@@ -26,7 +26,7 @@ namespace Infrastructure.IntegrationTests
             var context = new TarefaContext(builder.Options);
             _repository = new TarefaRepository(context);
         }
-        
+
         [Fact]
         public void ObterTest()
         {
@@ -35,38 +35,38 @@ namespace Infrastructure.IntegrationTests
             tarefas.Should().NotBeNullOrEmpty()
                 .And.HaveCountGreaterOrEqualTo(20);
         }
-        
+
         [Fact]
         public void ObterPorTest()
         {
-            var tarefas = _repository.ObterPor(x=>x.Nome.Contains("E00")).ToList();
-            
+            var tarefas = _repository.ObterPor(x => x.Nome.Contains("Fazer 1")).ToList();
+
             tarefas.Should().NotBeNullOrEmpty()
-                .And.HaveCount(9);
+                .And.HaveCount(11);
         }
-        
+
         [Fact]
         public void ObterPorAsyncTest()
         {
-            var task = _repository.ObterPorAsync(x=>x.Nome.Contains("E00"));
+            var task = _repository.ObterPorAsync(x => x.Nome.Contains("Fazer 1"));
 
             var tarefas = task.Result.Should().BeOfType<List<Tarefa>>().Subject;
-            
+
             tarefas.Should().NotBeNullOrEmpty()
-                .And.HaveCount(9);
+                .And.HaveCount(11);
         }
-        
+
         [Fact]
         public void ObterTodasAsyncTest()
         {
             var task = _repository.ObterTodasAsync();
 
             var tarefas = task.Result.Should().BeOfType<List<Tarefa>>().Subject;
-            
+
             tarefas.Should().NotBeNullOrEmpty()
                 .And.HaveCount(20);
         }
-        
+
         [Fact]
         public void ObterComPaginacaoTest()
         {
@@ -83,9 +83,9 @@ namespace Infrastructure.IntegrationTests
 
             tarefas.Should().NotBeNullOrEmpty()
                 .And.HaveCount(5)
-                .And.OnlyContain(x=>x.Concluida);
+                .And.OnlyContain(x => x.Concluida);
         }
-        
+
         [Fact]
         public void ObterTarefasConcluidasFromSqlTest()
         {
@@ -93,21 +93,23 @@ namespace Infrastructure.IntegrationTests
 
             tarefas.Should().NotBeNullOrEmpty()
                 .And.HaveCount(5)
-                .And.OnlyContain(x=>x.Concluida);
+                .And.OnlyContain(x => x.Concluida);
         }
-        
+
         [Fact]
         public void ObterTarefasConcluidasFromSqlAsyncTest()
         {
             var task = _repository.ObterTarefasConcluidasFromSqlAsync();
-            
+
             var tarefas = task.Result.Should().BeOfType<List<TarefaConcluidaQuery>>().Subject;
 
             tarefas.Should().NotBeNullOrEmpty()
                 .And.HaveCount(5)
-                .And.OnlyContain(x=>x.Concluida);
+                .And.OnlyContain(x => x.Concluida); // Way 1
+
+            tarefas.All(x => x.Concluida).Should().BeTrue(); // Way 2
         }
-        
+
         [Fact]
         public void ObterTarefasConcluidasFromSqlComPaginacaoTest()
         {
@@ -116,6 +118,5 @@ namespace Infrastructure.IntegrationTests
             tarefas.Should().NotBeNullOrEmpty()
                 .And.HaveCount(3);
         }
-        
     }
 }

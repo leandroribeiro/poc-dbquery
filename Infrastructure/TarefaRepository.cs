@@ -53,7 +53,7 @@ namespace Infrastructure
         
         public IQueryable<TarefaConcluidaQuery> ObterTarefasConcluidasFromSql()
         {
-            var query = "SELECT Nome, Concluida FROM Tarefa WHERE Concluida=1";
+            var query = "SELECT t.Nome AS 'Tarefa', U.Nome AS 'Usuario', Concluida FROM Tarefas AS T LEFT JOIN Usuarios AS U ON U.Id = T.UsuarioId WHERE T.Concluida=1";
             
             return Context.Query<TarefaConcluidaQuery>()
                 .FromSql(query);

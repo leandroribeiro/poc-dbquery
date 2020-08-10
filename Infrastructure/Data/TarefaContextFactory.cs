@@ -1,9 +1,7 @@
-﻿using System.IO;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.Extensions.Configuration;
 
-namespace Infrastructure
+namespace Infrastructure.Data
 {
     public class TarefaContextFactory : IDesignTimeDbContextFactory<TarefaContext>
     {

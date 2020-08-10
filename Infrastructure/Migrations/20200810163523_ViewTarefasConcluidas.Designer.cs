@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(TarefaContext))]
-    [Migration("20200808020218_EstruturaInicial")]
-    partial class EstruturaInicial
+    [Migration("20200810163523_ViewTarefasConcluidas")]
+    partial class ViewTarefasConcluidas
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(TarefaContext))]
-    [Migration("20200808020218_EstruturaInicial")]
-    partial class EstruturaInicial
+    [Migration("20200810164432_InsercaoDeDados")]
+    partial class InsercaoDeDados
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

@@ -1,7 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using Domain;
 using FluentAssertions;
+using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
@@ -33,16 +36,44 @@ namespace Infrastructure.IntegrationTests
             var tarefas = _repository.Obter().ToList();
 
             tarefas.Should().NotBeNullOrEmpty()
-                .And.HaveCountGreaterOrEqualTo(20);
+                .And.HaveCountGreaterOrEqualTo(20)
+                .And.OnlyContain(x => !string.IsNullOrEmpty(x.Nome));
         }
 
         [Fact]
         public void ObterPorTest()
         {
-            var tarefas = _repository.ObterPor(x => x.Nome.Contains("Fazer 1")).ToList();
+            var tarefas = _repository.ObterPor(PorNome("Fazer 3")).ToList();
 
             tarefas.Should().NotBeNullOrEmpty()
-                .And.HaveCount(11);
+                .And.HaveCount(1)
+                .And.OnlyContain(x => !string.IsNullOrEmpty(x.Nome));
+            
+            tarefas = _repository.ObterPor(PorNome("Fazer 1")).ToList();
+            
+            tarefas.Should().NotBeNullOrEmpty()
+                .And.HaveCount(11)
+                .And.OnlyContain(x => !string.IsNullOrEmpty(x.Nome));
+        }
+
+        [Fact]
+        public void ObterPorMultiplosCriteriosTest()
+        {
+            var tarefas = _repository.ObterPor(PorNomeEConcluidas("Fazer 1")).ToList();
+            
+            tarefas.Should().NotBeNullOrEmpty()
+                .And.HaveCount(1)
+                .And.OnlyContain(x => !string.IsNullOrEmpty(x.Nome));
+        }
+        
+        private static Expression<Func<Tarefa, bool>> PorNome(string nomeParcial)
+        {
+            return x => x.Nome.Contains(nomeParcial);
+        }
+        
+        private static Expression<Func<Tarefa, bool>> PorNomeEConcluidas(string nomeParcial)
+        {
+            return x => x.Nome.Contains(nomeParcial) && x.Concluida;
         }
 
         [Fact]
@@ -53,7 +84,8 @@ namespace Infrastructure.IntegrationTests
             var tarefas = task.Result.Should().BeOfType<List<Tarefa>>().Subject;
 
             tarefas.Should().NotBeNullOrEmpty()
-                .And.HaveCount(11);
+                .And.HaveCount(11)
+                .And.OnlyContain(x => !string.IsNullOrEmpty(x.Nome));
         }
 
         [Fact]
@@ -64,7 +96,8 @@ namespace Infrastructure.IntegrationTests
             var tarefas = task.Result.Should().BeOfType<List<Tarefa>>().Subject;
 
             tarefas.Should().NotBeNullOrEmpty()
-                .And.HaveCount(20);
+                .And.HaveCount(20)
+                .And.OnlyContain(x => !string.IsNullOrEmpty(x.Nome));
         }
 
         [Fact]
@@ -73,9 +106,23 @@ namespace Infrastructure.IntegrationTests
             var tarefas = _repository.ObterComPaginacao(1, 3).ToList();
 
             tarefas.Should().NotBeNullOrEmpty()
-                .And.HaveCount(3);
+                .And.HaveCount(3)
+                .And.OnlyContain(x => !string.IsNullOrEmpty(x.Nome));
         }
 
+        [Fact]
+        public void ObterTarefasAtribuidasTest()
+        {
+            var tarefas = _repository.ObterTodasAtribuidas().ToList();
+
+            tarefas.Should().NotBeNullOrEmpty()
+                .And.HaveCount(9)
+                .And.OnlyContain(x => !string.IsNullOrEmpty(x.Nome))
+                .And.OnlyContain(x => !string.IsNullOrEmpty(x.Usuario.Nome));
+        }
+        
+        // TODO -- MOVER para outra classe?!
+        
         [Fact]
         public void ObterTarefasConcluidasTest()
         {
@@ -83,7 +130,9 @@ namespace Infrastructure.IntegrationTests
 
             tarefas.Should().NotBeNullOrEmpty()
                 .And.HaveCount(5)
-                .And.OnlyContain(x => x.Concluida);
+                .And.OnlyContain(x => x.Concluida)
+                .And.OnlyContain(x => !string.IsNullOrEmpty(x.Tarefa))
+                .And.OnlyContain(x => !string.IsNullOrEmpty(x.Usuario));
         }
 
         [Fact]
@@ -93,7 +142,9 @@ namespace Infrastructure.IntegrationTests
 
             tarefas.Should().NotBeNullOrEmpty()
                 .And.HaveCount(5)
-                .And.OnlyContain(x => x.Concluida);
+                .And.OnlyContain(x => x.Concluida)
+                .And.OnlyContain(x => !string.IsNullOrEmpty(x.Tarefa))
+                .And.OnlyContain(x => !string.IsNullOrEmpty(x.Usuario));
         }
 
         [Fact]
@@ -105,7 +156,9 @@ namespace Infrastructure.IntegrationTests
 
             tarefas.Should().NotBeNullOrEmpty()
                 .And.HaveCount(5)
-                .And.OnlyContain(x => x.Concluida); // Way 1
+                .And.OnlyContain(x => x.Concluida)
+                .And.OnlyContain(x => !string.IsNullOrEmpty(x.Tarefa))
+                .And.OnlyContain(x => !string.IsNullOrEmpty(x.Usuario));// Way 1
 
             tarefas.All(x => x.Concluida).Should().BeTrue(); // Way 2
         }
@@ -116,7 +169,10 @@ namespace Infrastructure.IntegrationTests
             var tarefas = _repository.ObterTarefasConcluidasFromSqlComPaginacao(1, 3).ToList();
 
             tarefas.Should().NotBeNullOrEmpty()
-                .And.HaveCount(3);
+                .And.HaveCount(3)
+                .And.OnlyContain(x => x.Concluida)
+                .And.OnlyContain(x => !string.IsNullOrEmpty(x.Tarefa))
+                .And.OnlyContain(x => !string.IsNullOrEmpty(x.Usuario));;
         }
     }
 }

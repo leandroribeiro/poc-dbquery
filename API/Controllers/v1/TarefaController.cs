@@ -17,6 +17,14 @@ namespace API.Controllers.v1
             _repository = repository;
         }
         
+        // GET api/v1/[controller]/ping
+        [Route("ping")]
+        [HttpGet]
+        public string Ping()
+        {
+            return "Pong";
+        }
+        
         // GET api/v1/[controller][?page=1&pageSize=5]
         [HttpGet]
         public PagedResult<Tarefa> Get(int page = 0, int pageSize = 5)

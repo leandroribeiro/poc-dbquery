@@ -17,6 +17,14 @@ namespace API.Controllers.v2
             Repository = repository;
         }
 
+        // GET api/v2/[controller]/ping
+        [Route("ping")]
+        [HttpGet]
+        public string Ping()
+        {
+            return "Pong";
+        }
+        
         // GET api/v2[controller]/concluidas[?page=1&pageSize=5]
         [Route("concluidas")]
         [HttpGet]

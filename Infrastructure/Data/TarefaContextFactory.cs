@@ -8,7 +8,8 @@ namespace Infrastructure.Data
         public TarefaContext CreateDbContext(string[] args)
         {
             var builder = new DbContextOptionsBuilder<TarefaContext>();
-            builder.UseSqlServer("Server=tcp:127.0.0.1,1433;Database=TarefaDb;User Id=sa;Password=Dev123456789;");
+            // TODO mover para ler da própria API
+            builder.UseSqlServer("Server=efpoc_database;Database=TarefaDb;User Id=sa;Password=Dev123456789;");
             
             return new TarefaContext(builder.Options);
         }
